@@ -1,0 +1,35 @@
+module mult_select(
+ // .adc_effective(adc_effective_in), .std_i(std_i), .mult_2(mult_2), .count_global(count_global)
+  input [31:0] adc_effective,
+  input [31:0] std_i,
+  output reg [31:0] mult_2,
+  input [4:0] count_global,
+  input clk
+  
+  );
+
+always @(posedge clk)
+begin
+    case(count_global)
+				      5'd1:
+				      begin
+				          mult_2 <= std_i;        
+				      end
+				      5'd7:
+				      begin		         
+				         mult_2 <= std_i;  
+				      end
+				      5'd20:
+				      begin
+				         mult_2    <= 0;    				        
+				      end
+				      default:
+				      begin
+				         if(count_global > 5'd22)
+				         begin
+				          	mult_2 <= adc_effective;
+				         end
+				      end
+    endcase
+  end
+endmodule

@@ -1,0 +1,42 @@
+
+module count_global (
+  input GlobalReset,
+  input clk,
+  input srdyi_counter,
+  input clk_stop,
+  output reg [4:0] count_global
+  );
+
+reg check_start;  
+
+always @(posedge clk)
+begin
+  if(GlobalReset == 1)
+  begin
+    count_global <= 0;
+    check_start  <= 0;
+  end  
+  else if(GlobalReset == 0)
+  begin
+    if(check_start == 1)
+    begin
+      if(clk_stop == 0)
+        begin
+          count_global <= count_global + 1; 
+        end
+      else if(clk_stop == 1)
+      begin
+          count_global <= count_global +1;
+          check_start <=0;
+      end 
+    end
+  end
+end
+
+always @(posedge srdyi_counter)
+begin
+  check_start <= 1;
+end
+
+
+endmodule
